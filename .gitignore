@@ -1,0 +1,78 @@
+# ---------- Node ----------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ---------- React ----------
+frontend/build/
+frontend/.env
+
+# ---------- Python ----------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+
+# ---------- VS Code ----------
+.vscode/
+
+# =====================
+# Python virtual envs
+# =====================
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# =====================
+# Python cache / build
+# =====================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# =====================
+# Python packaging
+# =====================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =====================
+# Jupyter / ML artifacts
+# =====================
+.ipynb_checkpoints/
+*.joblib
+*.pkl
+*.pickle
+
+# =====================
+# Logs & temp files
+# =====================
+*.log
+*.tmp
+
+# =====================
+# OS / Editor junk
+# =====================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# =====================
+# Environment variables
+# =====================
+.env

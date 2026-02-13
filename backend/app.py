@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import os
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -12,7 +13,7 @@ from predictions import FinancialPredictor
 
 app = Flask(__name__)
 financial_predictor = FinancialPredictor()
-app.config['JWT_SECRET_KEY'] = 'your-secret-key-change-in-production'
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'your-secret-key-change-in-production')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 
 CORS(app)
@@ -1064,4 +1065,5 @@ def contribute_to_goal(goal_id):
     return jsonify({"message": "Contribution added"}), 200
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

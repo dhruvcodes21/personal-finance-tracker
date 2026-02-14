@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import API_BASE_URL from "../config";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,7 +13,7 @@ export default function Login() {
     e.preventDefault();
     setError("");
 
-    const res = await fetch(`${API_BASE_URL}/auth/login`, {
+    const res = await fetch("https://personal-finance-tracker-gbi4.onrender.com/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

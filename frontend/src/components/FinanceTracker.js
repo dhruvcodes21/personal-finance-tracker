@@ -1,13 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { PieChart, Pie, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell, ResponsiveContainer } from 'recharts';
-import { TrendingUp, TrendingDown, DollarSign, Wallet, Target, AlertCircle, PlusCircle, Calendar, CreditCard, Award, Activity } from 'lucide-react';
+import { TrendingUp, TrendingDown, Wallet, Target, AlertCircle, PlusCircle, Award, Activity } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";
 // import { useEffect } from 'react';
 
 const FinanceTracker = () => {
-  const {token, userId, logout} = useAuth();
+  const {token, logout} = useAuth();
   const navigate = useNavigate();
 //   const { logout } = useAuth();
     const handleLogout = () => {
@@ -15,12 +15,13 @@ const FinanceTracker = () => {
         navigate("/login");
     };
     
-    const API_BASE = "http://localhost:5000/api";
+    const API_BASE = "https://personal-finance-tracker-gbi4.onrender.com/api";
 
-    const authHeaders = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-    };
+    const authHeaders = useMemo(() => ({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }), [token]);
+
   const [activeTab, setActiveTab] = useState('dashboard');
   const [editingTransaction, setEditingTransaction] = useState(null);
   const [transactions, setTransactions] = useState([]);
@@ -81,7 +82,7 @@ useEffect(() => {
   };
 
   loadTransactions();
-}, [token]);
+}, [token,authHeaders]);
 
 useEffect(() => {
   if (editingTransaction) {
@@ -115,7 +116,7 @@ useEffect(() => {
     .catch(err => {
       console.warn("Using mock budgets", err);
     });
-}, [token]);
+}, [token,authHeaders]);
 useEffect(() => {
   if (!token) return;
 
@@ -132,7 +133,7 @@ useEffect(() => {
     .catch(err => {
       console.warn("Using mock goals", err);
     });
-}, [token]);
+}, [token,authHeaders]);
 
 useEffect(() => {
   if (!token) return;
@@ -148,7 +149,7 @@ useEffect(() => {
     .catch(err => {
       console.warn("Analytics fetch failed, using frontend fallback", err);
     });
-}, [token]);
+}, [token,authHeaders]);
 
 useEffect(() => {
   if (!token) return;
@@ -167,7 +168,7 @@ useEffect(() => {
     .catch(err => {
       console.error("Cashflow prediction failed:", err);
     });
-}, [token]);
+}, [token,authHeaders]);
 
 useEffect(() => {
   if (!token) return;
@@ -178,7 +179,7 @@ useEffect(() => {
     .then(res => res.json())
     .then(setBudgetRisks)
     .catch(() => {});
-}, [token]);
+}, [token,authHeaders]);
 useEffect(() => {
   if (!token) return;
 
@@ -188,7 +189,7 @@ useEffect(() => {
     .then(res => res.json())
     .then(setSpendingInsights)
     .catch(err => console.error("Failed to load insights", err));
-}, [token]);
+}, [token,authHeaders]);
 
 const loadGoalProjection = async (goalId) => {
   if (goalProjections[goalId]) return;
@@ -1064,9 +1065,7 @@ const emergencyMonths =
                 const current=Number(goal.current_amount ?? 0);
                 const target=Number(goal.target_amount ?? 0);
                 const percentage = target > 0 ? (current / target) * 100 : 0;
-                const remaining = Number(goal.target_amount??0) - Number(goal.current_amount??0);
-                const daysUntilDeadline = Math.ceil((new Date(goal.deadline) - new Date()) / (1000 * 60 * 60 * 24));
-                const monthlyRequired = daysUntilDeadline > 0 ? Math.ceil(remaining / (daysUntilDeadline / 30)) : 0;
+               
                 
                 return (
                   <div key={goal.id} className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">

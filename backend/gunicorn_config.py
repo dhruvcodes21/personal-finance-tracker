@@ -2,10 +2,10 @@
 import multiprocessing
 
 # Render free tier has limited memory, use fewer workers
-workers = 1  # Use only 1 worker on free tier
+workers = 2  # Use only 1 worker on free tier
 worker_class = "sync"
 worker_connections = 1000
-timeout = 120  # Increase timeout to 120 seconds
+timeout = 60  # Increase timeout to 120 seconds
 keepalive = 5
 
 # Preload app to reduce memory usage per worker

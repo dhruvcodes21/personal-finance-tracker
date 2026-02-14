@@ -23,12 +23,21 @@ jwt = JWTManager(app)
 # Database connection with timeout
 def get_db_connection():
     try:
+        database_url = os.environ.get('DATABASE_URL')
+
+        if not database_url:
+            print("DATABASE_URL not set!")
+            return None
+
         conn = psycopg2.connect(
-            os.environ.get('DATABASE_URL'),
+            database_url,
             connect_timeout=10,
-            cursor_factory=RealDictCursor
+            cursor_factory=RealDictCursor,
+            sslmode="require"   # 👈 Force SSL for Supabase
         )
+
         return conn
+
     except Exception as e:
         print(f"Database connection error: {e}")
         return None

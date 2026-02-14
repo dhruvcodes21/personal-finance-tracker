@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 export default function Register() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,7 +17,7 @@ export default function Register() {
     const res = await fetch("https://personal-finance-tracker-gbi4.onrender.com/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ username, email, password }),
     });
 
     const data = await res.json();
@@ -26,7 +26,7 @@ export default function Register() {
       setError(data.error);
     } else {
       login(data.user, data.access_token);
-      navigate("/");
+      navigate("/dashboard");
     }
   };
 
@@ -38,28 +38,43 @@ export default function Register() {
         {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
         <input
+          type="text"
+          name="username"
+          id="username"
           className="w-full mb-4 px-4 py-2 border rounded-lg"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
         />
 
         <input
+          type="email"
+          name="email"
+          id="email"
           className="w-full mb-4 px-4 py-2 border rounded-lg"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
           type="password"
+          name="password"
+          id="password"
           className="w-full mb-4 px-4 py-2 border rounded-lg"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
+          minLength={6}
         />
 
-        <button className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
+        <button 
+          type="submit"
+          className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700"
+        >
           Register
         </button>
 
